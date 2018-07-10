@@ -1,0 +1,238 @@
+{% extends 'home/public/base.html' %}
+
+{% block css %}
+
+    <link rel="stylesheet" type="text/css" href="/static/home/public/css/global.css">
+    <link rel="stylesheet" type="text/css" href="/static/home/public/css/app.css">
+    
+    <link rel="stylesheet" type="text/css" href="/static/home/public/css/member.css">
+    <link rel="stylesheet" type="text/css" href="/static/home/public/css/member-app.css">
+
+{% endblock %}
+
+
+{% block mbx %}
+
+<div class="navbar-left">
+    <ol class="breadcrumb">
+        <li >首页</li>
+        
+        <li class="active">我的个人中心</li>
+        
+    </ol>
+</div>
+
+{% endblock %}
+
+{% block con %}
+
+    <!-- 主内容区域 -->
+    <div class="mainbody order">
+        <div class="container">
+
+            
+            <div class="main clearfix">
+                <!-- 左侧导航 -->
+                <div class="left-nav f-fl hidden-xs hidden-sm">
+                    <div class="nav-main">
+                        <a href="javascript:;" class="type-title"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>订单中心</a>
+                        <a href="order.html" class="ml" >我的订单</a>
+                        <a href="#" class="ml " >我的回购单</a>
+                        <a href="#" class="ml " >我的意外保</a>
+                        <a href="javascript:;" class="type-title"><span class="glyphicon glyphicon-user" aria-hidden="true"></span>个人中心</a>
+                        <a href="{% url 'orderconfirm' %}" class="ml " >地址管理</a>
+                        <a href="#" class="ml " >我的收藏</a>
+                        <a href="#" class="ml " >消息提醒</a>
+                        <a href="#" class="ml ">建议反馈</a>
+                    </div>
+                </div><!-- 左侧导航 E-->
+                <!-- 右侧内容展示 -->
+                <div class="right-content f-fr col-xs-12 col-sm-12">
+                    <div class="index-main">
+                        <div class="top clearfix">
+                            <div class="information clearfix f-fl col-xs-12 col-sm-12">
+                                <div class="pic f-fl">
+                                  <img src="{{ myuser.picurl }}" alt="">
+                                </div>
+                                <div class="name f-fl">
+                                    <span>{{ request.session.VipUser.name }}</span>
+                                    <span>欢迎您回来！</span>
+                                </div>
+                                <div class="info f-fl">
+                                    <ul>
+                        
+                                        <li>绑定手机号：<span>{{ myuser.phone }}</span></li>
+                                        <li class="emailText">绑定邮箱：<span>{{ myuser.email }}</span></li>
+                                    </ul>
+                                    <a class="edit" href="{% url 'edit' myuser.id %}" target="_blank">修改个人信息 &gt;</a>
+                                </div>
+                            </div>
+                            <div class="backCouponNum f-fl col-xs-12 col-sm-12">
+                                <p>回购券：<span>0</span></p>
+                            </div>
+                        </div>
+
+                        <!-- 订单 -->
+                        <div class="bottom clearfix">
+                            <div class="orderState f-fl col-xs-12 col-sm-12">
+                                <div class="title clearfix">
+                                    <span class="f-fl">订单状态</span>
+                                    <a class="detail f-fr" href="{% url 'myorder' %}">查看全部订单 &gt;</a>
+                                </div>
+                                <div class="content">
+                                    <div class="waitPay clearfix">
+                                        <span class="f-fl cercl">
+                                            <span class="glyphicon glyphicon-folder-open iconfont" aria-hidden="true"></span>
+                                        </span>
+                                        <div class="text f-fl">
+                                            {% for i in orders %}
+                                                {% if i.status == 1 %}
+                                            <p>待付款订单id：<span class="num">{{ i.id }}</span></p>
+                                            <!-- <a class="detail" href="#">查看全部待付款订单 &gt;</a> -->
+                                        </div>
+                                    </div>
+                                    <div class="waitDeliver clearfix">
+                                        <span class="f-fl cercl">
+                                            <span class="glyphicon glyphicon-folder-close iconfont" aria-hidden="true"></span>
+                                        </span>
+                                        <div class="text f-fl">
+                                            {% elif i.status == 3 %}
+                                           
+                                            <p>待发货订单id：<span class="num">{{ i.id  }}</span></p>
+                                            {% endif %}
+                                            {% endfor %}
+                                            <a class="detail" href="{% url 'myorder' %}">查看全部订单 &gt; </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                           
+                            
+                            <!-- Button trigger modal -->
+
+                            <!-- 地址添加表单 -->
+                            <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                              <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                
+                                <form action="{% url 'member' %}" method="post">
+                                    {% csrf_token %}
+                                  <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                    <h4 class="modal-title" id="myModalLabel">添加收货地址</h4>
+                                  </div>
+                                  <div class="modal-body">
+                                      <div class="form-group">
+                                        <label for="exampleInputEmail1">收货人</label>
+                                        <input type="text" name="aname" class="form-control"  placeholder="收货人">
+                                      </div>
+                                      <div class="form-group">
+                                        <label for="exampleInputEmail1">收货电话</label>
+                                        <input type="text" name="aphone" class="form-control"  placeholder="收货电话">
+                                      </div>
+                                      <div class="form-group">
+                                        <label for="exampleInputEmail1">收货地址</label>
+                                        <input type="text" name="aads" class="form-control"  placeholder="收货地址">
+                                      </div>
+                                      <div class="checkbox">
+                                        <label>
+                                          <input name="status" value="1" type="checkbox"> 是否设为默认地址
+                                        </label>
+                                      </div>
+                                  </div>
+                                  <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                                    <button  class="btn btn-primary">保存</button>
+                                  </div>
+                                </form>
+
+                                </div>
+                              </div>
+                            </div>
+
+                            </div>
+                        </div>
+                        <!-- 收货地址显示 添加-->
+                     <div class="top clearfix">
+                     <div class="message f-fl col-xs-12 col-sm-12">
+                               
+                                <div class="mainbody cart">
+                                <div class="container">
+                                 <div class="title clearfix">
+                                    <span class="f-fl"><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">添加收货地址</button></span>
+                                    <a class="detail f-fr" href="{% url 'myorder' %}"> &gt;</a>
+                                </div>
+                            
+                                    
+                        
+                                <div class="row">
+                                    <div class="col-md-10 col-md-offset-1">
+                                        <div class="row">
+                                        {% for v in address %}
+                                            <div class="col-md-3 address-items" aid="{{ v.id }}" ischecked="{{ v.status }}" {% if v.status == 1%} style="border:2px dashed red;margin-left: 5px;margin-top: 5px;" {% else %} style="border:2px solid black;margin-left: 5px;margin-top: 5px;" {% endif %}>
+                                                <address>
+                                                  <strong>收货人:{{ v.aname }}</strong><br>
+                                                  收货地址:{{ v.aads }}<br>
+                                                  <abbr title="Phone">收货电话:</abbr>{{ v.aphone }}
+                                                </address>
+                                            </div>
+                                        {% endfor %}
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    
+                    </div>
+                </div>    
+            </div>
+        </div>  
+    </div>
+{% endblock %}
+
+{% block js %}
+<script type="text/javascript">
+    //回顶部
+    backTop();
+
+    // 给所有的地址 绑定单击事件
+    $('.address-items').click(function(){
+        // 给当前选择的地址添加样式,
+        $(this).css('border','2px dashed red').siblings().css('border','2px solid black')
+        // 把当前选择的地址id添加到表单中
+        aid = $(this).attr('aid')
+        // alert('11')
+
+        $('input[name=addressid]').val(aid)
+        // alert('22')
+
+        $.get("{% url 'addressedit' %}",{aid:aid},function(data){
+            // alert('33')
+            location.href='/addressedit/?aid='+aid
+        })
+        
+    })
+
+    // 把默认地址添加到表单中
+    aid = $('.address-items[ischecked=1]').attr('aid')
+    $('input[name=addressid]').val(aid)
+
+
+    // 表单事件,确认是否选择了地址
+    $('#createFrom').submit(function(){
+        // 确认是否选择了地址
+        aid = $('input[name=addressid]').val()
+        if(aid){
+
+        }
+
+    })
+
+
+
+</script>
+
+
+{% endblock %}

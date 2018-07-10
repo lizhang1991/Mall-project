@@ -1,0 +1,148 @@
+{% extends 'admin/public/base.html'%}
+{% block con-header %}
+<div class="container-fluid am-cf">
+    <div class="row">
+        <div class="am-u-sm-12 am-u-md-12 am-u-lg-9">
+            <div class="page-header-heading"><span class="am-icon-home page-header-heading-icon"></span>商品详情</div>
+            
+        </div>
+
+    </div>
+
+ </div>
+
+
+{% endblock %}
+
+{% block con-body %}
+
+  <div class="row-content am-cf"> 
+   <div class="row"> 
+    <div class="am-u-sm-12 am-u-md-12 am-u-lg-12"> 
+     <div class="widget am-cf"> 
+      <div class="widget-head am-cf"> 
+       <div class="widget-title am-fl">
+        商品详情
+       </div> 
+       <div class="widget-function am-fr"> 
+        <a href="javascript:;" class="am-icon-cog"></a> 
+       </div> 
+      </div> 
+      <div class="widget-body am-fr"> 
+       <form class="am-form tpl-form-line-form" action='#' method="post" enctype="multipart/form-data"> 
+        <input type="hidden" name="id" value="{{ uinfo.id }}">
+        {% csrf_token %}
+        <div class="am-form-group"> 
+         <label for="user-name" class="am-u-sm-3 am-form-label" >用户名 <span class="tpl-form-line-small-title">用户名</span></label> 
+         <div class="am-u-sm-9"> 
+          <input type="text" name="username" value="{{ uinfo.user.username }}" class="tpl-form-input" id="user-name" placeholder="请输入用户名" /> 
+          
+         </div> 
+        </div> 
+        <div class="am-form-group"> 
+         <label for="user-password" class="am-u-sm-3 am-form-label">订单号 <span class="tpl-form-line-small-title">订单号</span></label> 
+         <div class="am-u-sm-9"> 
+          <input type="text" name="orderid"  value="{{ uinfo.id }}" class="tpl-form-input" id="user-name" placeholder="请输入订单号" /> 
+          
+         </div> 
+        </div> 
+
+        <div class="am-form-group"> 
+            <label for="user-email" class="am-u-sm-3 am-form-label">订单时间<span class="tpl-form-line-small-title">订单时间</span></label> 
+            <div class="am-u-sm-9"> 
+            <input type="text" name="addtime" value="{{ uinfo.addtime|date:'Y-m-d H:i:s'  }}" class="tpl-form-input" id="user-name" placeholder="请输入订单时间" />  
+            </div> 
+        </div> 
+
+      
+        {% for i in  uinfo.orderinfo %}
+         <div class="am-form-group"> 
+            <label for="user-email" class="am-u-sm-3 am-form-label">商品名称<span class="tpl-form-line-small-title">商品数量</span></label> 
+            <div class="am-u-sm-9"> 
+            <input type="text" name="addtime" value="{{ i.gid.title }}" class="tpl-form-input" id="user-name" placeholder="请输入订单时间" />  
+            </div> 
+      
+        </div>
+          <div class="am-form-group"> 
+            <label for="user-email" class="am-u-sm-3 am-form-label">商品价格<span class="tpl-form-line-small-title">商品价格</span></label> 
+            <div class="am-u-sm-9"> 
+            <input type="text" name="addtime" value="{{ i.price }}" class="tpl-form-input" id="user-name" placeholder="请输入订单时间" />  
+            </div> 
+        </div> 
+         
+
+          <div class="am-form-group"> 
+            <label for="user-email" class="am-u-sm-3 am-form-label">商品数量<span class="tpl-form-line-small-title">商品价格</span></label> 
+            <div class="am-u-sm-9"> 
+            <input type="text" name="addtime" value="{{ i.num }}" class="tpl-form-input" id="user-name" placeholder="请输入订单时间" />  
+            </div> 
+        </div> 
+      {% endfor %}
+
+         
+  
+
+        <div class="am-form-group"> 
+            <label for="user-email" class="am-u-sm-3 am-form-label">收货信息<span class="tpl-form-line-small-title">收货信息</span></label> 
+            <div class="am-u-sm-9"> 
+            <input type="text" name="address" value="{{ uinfo.address.aads }}" class="tpl-form-input" id="user-name" placeholder="请输入邮箱" />  
+            </div> 
+        </div>
+
+       
+        <div class="am-form-group"> 
+          <label class="am-u-sm-3 am-form-label">商品总价<span class="tpl-form-line-small-title">phone</span></label> 
+          <div class="am-u-sm-9"> 
+          <input type="text" name="totalprice" value="{{ uinfo.totalprice }}" placeholder="输入总价" /> 
+          </div> 
+        </div> 
+        <div class="am-form-group"> 
+          <label class="am-u-sm-3 am-form-label">商品总数数量 <span class="tpl-form-line-small-title">数量</span></label> 
+          <div class="am-u-sm-9"> 
+          <input type="text" name="totalnum" value="{{ uinfo.totalnum }}" placeholder="输入数量" /> 
+          </div> 
+        </div> 
+        <div class="am-form-group"> 
+          <label class="am-u-sm-3 am-form-label">订单状态 <span class="tpl-form-line-small-title">status</span></label> 
+          <div class="am-u-sm-9"> 
+          <input type="radio" name="status" value="待付款" {% if uinfo.status == 1 %}  checked {% endif %} />待付款 
+          <input type="radio" name="status" value="待发货" {% if uinfo.status == 2 %}  checked {% endif %} />待发货
+          <input type="radio" name="status" value="待收货" {% if uinfo.status == 3 %}  checked {% endif %} />待收货
+          <input type="radio" name="status" value="待评价" {% if uinfo.status == 4 %}  checked {% endif %} />待评价
+          <input type="radio" name="status" value="待发货" {% if uinfo.status == 5 %}  checked {% endif %} />已取消
+          </div> 
+        </div> 
+  
+
+
+     <!--    <div class="am-form-group"> 
+         <label for="user-weibo" class="am-u-sm-3 am-form-label">商品图片 <span class="tpl-form-line-small-title">Images</span></label> 
+         <div class="am-u-sm-9"> 
+          <div class="am-form-group am-form-file"> 
+           <div class="tpl-form-file-img"> 
+            <img src="{{ uinfo.goods.pic }}" alt="" width="103px;"/> 
+           </div> 
+           <button type="button" class="am-btn am-btn-danger am-btn-sm"> <i class="am-icon-cloud-upload"></i> 头像图片</button> 
+           <input id="doc-form-file" name="pic" type="file" multiple="" /> 
+          </div> 
+         </div> 
+        </div> 
+ -->
+
+
+        <div class="am-form-group"> 
+   <!--       <div class="am-u-sm-9 am-u-sm-push-3"> 
+          <button  class="am-btn am-btn-primary tpl-btn-bg-color-success ">提交</button> 
+         </div>  -->
+        </div> 
+       </form> 
+      </div> 
+     </div> 
+    </div> 
+   </div> 
+
+
+  </div>
+
+
+{% endblock%}

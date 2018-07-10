@@ -1,0 +1,130 @@
+{% extends 'admin/public/base.html'%}
+{% block con-header %}
+<div class="container-fluid am-cf">
+    <div class="row">
+        <div class="am-u-sm-12 am-u-md-12 am-u-lg-9">
+            <div class="page-header-heading"><span class="am-icon-home page-header-heading-icon"></span>商品修改</div>
+            
+        </div>
+
+    </div>
+
+ </div>
+
+
+{% endblock %}
+
+{% block con-body%}
+
+  <div class="row-content am-cf"> 
+   <div class="row"> 
+    <div class="am-u-sm-12 am-u-md-12 am-u-lg-12"> 
+     <div class="widget am-cf"> 
+      <div class="widget-head am-cf"> 
+       <div class="widget-title am-fl">
+        商品编辑
+       </div> 
+       <div class="widget-function am-fr"> 
+        <a href="javascript:;" class="am-icon-cog"></a> 
+       </div> 
+      </div> 
+      <div class="widget-body am-fr"> 
+       <form class="am-form tpl-form-line-form" action='{% url "admin_goods_update" %}' method="post" enctype="multipart/form-data"> 
+        <input type="hidden" name="gid" value="{{ uinfo.id }}">
+        {% csrf_token %}
+         <div class="am-form-group">
+          <label for="user-name" class="am-u-sm-3 am-form-label">
+              所属分类
+          </label>
+          <select name="typeid" data-am-selected="{btnSize: 'sm'}" style="display: none;">
+            {% for v in tlist %}
+                {% if v.pid == 0 %}
+                  <option disabled value="{{ v.id }}">{{ v.name }}</option>
+                {% else %}
+                  <option value="{{ v.id }}">{{ v.name }}</option>
+                {% endif %}
+            {% endfor %}
+          </select>
+      </div>
+        
+        <div class="am-form-group"> 
+         <label for="user-name" class="am-u-sm-3 am-form-label">商品标题 <span class="tpl-form-line-small-title">title</span></label> 
+         <div class="am-u-sm-9"> 
+          <input type="text" name="title" value="{{ uinfo.title }}" class="tpl-form-input" id="user-name" placeholder="请输入商品标题" /> 
+          
+         </div> 
+
+        </div> 
+        <div class="am-form-group"> 
+         <label for="user-password" class="am-u-sm-3 am-form-label">商品价格 <span class="tpl-form-line-small-title">price</span></label> 
+         <div class="am-u-sm-9"> 
+          <input type="text" name="price" value="{{ uinfo.price }}" class="tpl-form-input" id="user-name" placeholder="请输入商品价格" /> 
+          
+         </div> 
+        </div> 
+
+        <div class="am-form-group"> 
+            <label for="user-email" class="am-u-sm-3 am-form-label">商品库存 <span class="tpl-form-line-small-title">storage</span></label> 
+            <div class="am-u-sm-9"> 
+            <input type="text" name="storage" value="{{ uinfo.storage }}" class="tpl-form-input" id="user-name" placeholder="请输入商品库存" />  
+            </div> 
+        </div> 
+
+  
+
+
+        <div class="am-form-group"> 
+         <label for="user-weibo" class="am-u-sm-3 am-form-label">商品图片 <span class="tpl-form-line-small-title">Images</span></label> 
+         <div class="am-u-sm-9"> 
+          <div class="am-form-group am-form-file"> 
+           <div class="tpl-form-file-img"> 
+            <img src="{{ uinfo.pic }}" alt="" width="103px;"/> 
+           </div> 
+           <button type="button" class="am-btn am-btn-danger am-btn-sm"> 
+            <i class="am-icon-cloud-upload"></i> 商品图片
+           </button> 
+           
+           <input id="doc-form-file" name="pic" type="file" multiple="" /> 
+          </div> 
+         </div> 
+        </div> 
+
+        <div class="am-form-group">
+    <label for="user-name" class="am-u-sm-3 am-form-label">
+        商品详情
+    <span class="tpl-form-line-small-title">info</span></label> 
+    <div class="am-u-sm-9">
+        <link rel="stylesheet" type="text/css" href="/ueditor/UE/third-party/SyntaxHighlighter/shCoreDefault.css">
+        <script type="text/javascript" src="/ueditor/UE/third-party/SyntaxHighlighter/shCore.js"></script>
+        <script type="text/javascript" src="/ueditor/UE/ueditor.config.js"></script>
+        <script type="text/javascript" src="/ueditor/UE/ueditor.all.min.js"></script>
+        <script type="text/javascript" src="/ueditor/UE/lang/zh-cn/zh-cn.js"></script>
+
+        <script id="editor" name="info"  type="text/plain" style="height:500px;color:red;">
+          {{ uinfo.info|safe }}
+        </script>
+        
+        <script type="text/javascript">
+           var ue = UE.getEditor('editor');
+           SyntaxHighlighter.all();
+        </script>
+    </div>
+        </div>
+
+        <div class="am-form-group"> 
+         <div class="am-u-sm-9 am-u-sm-push-3"> 
+          <button  class="am-btn am-btn-primary tpl-btn-bg-color-success ">提交</button> 
+         </div> 
+        </div> 
+
+       </form> 
+      </div> 
+     </div> 
+    </div> 
+   </div> 
+
+
+  </div>
+
+
+{% endblock%}

@@ -1,0 +1,184 @@
+{% extends 'admin/public/base.html'%}
+{% block con-header %}
+<div class="container-fluid am-cf">
+    <div class="row">
+        <div class="am-u-sm-12 am-u-md-12 am-u-lg-9">
+            <div class="page-header-heading"><span class="am-icon-home page-header-heading-icon"></span>会员添加</div>
+            
+        </div>
+
+    </div>
+
+ </div>
+
+
+{% endblock %}
+
+{% block con-body%}
+
+  <div class="row-content am-cf"> 
+   <div class="row"> 
+    <div class="am-u-sm-12 am-u-md-12 am-u-lg-12"> 
+     <div class="widget am-cf"> 
+      <div class="widget-head am-cf"> 
+       <div class="widget-title am-fl">
+        会员添加
+       </div> 
+       <div class="widget-function am-fr"> 
+        <a href="javascript:;" class="am-icon-cog"></a> 
+       </div> 
+      </div> 
+      <div class="widget-body am-fr"> 
+       <form class="am-form tpl-form-line-form" action='{% url "admin_user_insert" %}' method="post" enctype="multipart/form-data"> 
+        {% csrf_token %}
+        <div class="am-form-group"> 
+         <label for="user-name" class="am-u-sm-3 am-form-label">用户名 <span class="tpl-form-line-small-title">name</span></label> 
+         <div class="am-u-sm-9"> 
+          <input type="text" name="username" class="tpl-form-input" id="user-name" placeholder="请输入用户名" /> 
+          
+         </div> 
+        </div> 
+        <div class="am-form-group"> 
+         <label for="user-password" class="am-u-sm-3 am-form-label">密码 <span class="tpl-form-line-small-title">password</span></label> 
+         <div class="am-u-sm-9"> 
+          <input type="password" name="password" class="tpl-form-input" id="user-name" placeholder="请输入密码" /> 
+          
+         </div> 
+        </div> 
+
+        <div class="am-form-group"> 
+            <label for="user-email" class="am-u-sm-3 am-form-label">邮箱 <span class="tpl-form-line-small-title">email</span></label> 
+            <div class="am-u-sm-9"> 
+            <input type="text" name="email" class="tpl-form-input" id="user-name" placeholder="请输入邮箱" />  
+            </div> 
+        </div> 
+
+       
+        <div class="am-form-group"> 
+          <label class="am-u-sm-3 am-form-label">手机号 <span class="tpl-form-line-small-title">phone</span></label> 
+          <div class="am-u-sm-9"> 
+          <input type="text" name="phone" placeholder="输入手机号" /> 
+          </div> 
+        </div> 
+        <div class="am-form-group"> 
+          <label class="am-u-sm-3 am-form-label">年龄 <span class="tpl-form-line-small-title">age</span></label> 
+          <div class="am-u-sm-9"> 
+          <input type="text" name="age" placeholder="输入年龄" /> 
+          </div> 
+        </div> 
+        <div class="am-form-group"> 
+          <label class="am-u-sm-3 am-form-label">性别 <span class="tpl-form-line-small-title">sex</span></label> 
+          <div class="am-u-sm-9"> 
+          <input type="radio" name="sex" value="男" />男 
+          <input type="radio" name="sex" value="女" />女 
+          </div> 
+        </div> 
+  
+
+
+        <div class="am-form-group"> 
+         <label for="user-weibo" class="am-u-sm-3 am-form-label">头像 <span class="tpl-form-line-small-title">Images</span></label> 
+         <div class="am-u-sm-9"> 
+          <div class="am-form-group am-form-file"> 
+           <div class="tpl-form-file-img"> 
+            <img id="filepicurl" src="/static/pics/default/default.jpg" alt="" width="103px;"/> 
+           </div> 
+           <input type="hidden" name="picurl" value="">
+           <button type="button" class="am-btn am-btn-danger am-btn-sm"> 
+            <i class="am-icon-cloud-upload"></i> 头像图片
+           </button> 
+           <input id="doc-form-file" name="pic" type="file" multiple="" /> 
+          </div> 
+         </div> 
+        </div> 
+        <!--  <script type="text/javascript">
+        
+        $('#doc-form-file').change(function(){
+          var form=new formData()
+          file=this.files[0]
+          form.append('pic',file)
+          form.append('csrfmiddlewaretoken','{{ csrf_token }}')
+
+          $.ajax({
+            url:'{% url "admin_ajax_upload" %}',
+            type:'POST',
+            data:form,
+            processData:false,
+            contentType:false,
+            async:true,
+            success:function(data){
+
+              if (data['code']==0){
+                $('#filepicurl').attr('src',data['url'])
+
+                $('input[name=picurl]').val(data['url'])
+              }else{
+                alert(data['msg'])
+              }
+            }
+          })
+        },'json')
+
+      </script>
+ -->
+ <script type="text/javascript">
+
+                            // ajax的文件上传
+    $('#doc-form-file').change(function(){
+      console.log('1')
+        // 创建一个表单对象
+        var form = new FormData()
+        // 获取当前选择的文件
+        file = this.files[0]
+        // 把当前的文件添加到 表单对象中
+        form.append('pic',file)
+        console.log('1')
+        form.append('csrfmiddlewaretoken','{{ csrf_token }}')
+
+
+        // 发送ajax
+        $.ajax({
+
+            // 请求地址
+            url : '{% url "admin_ajax_upload" %}',
+            type : 'POST',
+            data : form,
+            processData:false,//设置ajax不处理发的数据
+            contentType:false,//不去设置context-Type请求头
+            async:true,//异步请求
+            success:function(data){
+              console.log(data)
+                // 判断文件是否上传成功
+                if(data['code'] == 0){
+                  console.log(data)
+                    // 把上传的图片动态加载到页面中
+                    $('#filepicurl').attr('src',data['url'])
+
+                    // 把上传的图片路径,添加到表单中
+                    $('input[name=picurl]').val(data['url'])
+                    
+                }else{
+                    alert(data['msg'])
+                }
+            }
+        },'json')
+
+    })
+
+</script>
+        <div class="am-form-group"> 
+         <div class="am-u-sm-9 am-u-sm-push-3"> 
+          <button  class="am-btn am-btn-primary tpl-btn-bg-color-success ">提交</button> 
+         </div> 
+        </div> 
+       </form> 
+      </div> 
+     </div> 
+    </div> 
+   </div> 
+
+
+  </div>
+
+
+{% endblock%}
